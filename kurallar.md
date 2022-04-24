@@ -17,7 +17,7 @@
 * Bir kişi her ay 1 tane başvuru yapabilir.
 
 ## Başvuru süreci
-* shorturl.at/rJN25 adresinden web adresinde yazmak istediğiniz blog yazısının başlığını ve kısaca konusunu girin. 
+* https://shorturl.at/rJN25 adresinden web adresinde yazmak istediğiniz blog yazısının başlığını ve kısaca konusunu girin. 
 * 1 hafta başvuru ve değerlendirme süreci vardır. 
 * Onay alırsanız bilgilendirileceksiniz
 * Yazıyı tamamlama süreniz 2 haftadır.
