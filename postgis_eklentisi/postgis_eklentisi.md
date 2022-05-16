@@ -329,7 +329,7 @@ SELECT ST_Equals(ST_GeomFromText('LINESTRING(0 0, 10 10)'),
 
 ### 7.5. ST_Intersects(A, B)
 
-Konum bazlı uygulamalarda sağladığı yüksek performanstan ötürü sıklıkla kullanılan bir fonksiyondur. GiST Index kullanan fonksiyonlardan biridir. GiST Index, genelleştirilmiş arama ağacı anlamında gelir ve çok boyutlu veriler için genel bir indeks oluşturma biçimidir. Yaygın olarak kullanılan mekansal indeksleme yöntemidir ve çok iyi sorgu performansı sunar. B-Tree indekslemeye uygun olmayan her türlü düzensiz veri yapısında sorgu performansını artırmak için kullanılabilir. Bir tablo üzerinde GiST indeks oluşturmak için aşağıdaki söz dizimi kullanılabilir.
+Konum bazlı uygulamalarda sağladığı yüksek performanstan ötürü sıklıkla kullanılan bir fonksiyondur. GiST Indeks kullanan fonksiyonlardan biridir. GiST Indeks, genelleştirilmiş arama ağacı anlamında gelir ve çok boyutlu veriler için genel bir indeks oluşturma biçimidir. Yaygın olarak kullanılan mekansal indeksleme yöntemidir ve çok iyi sorgu performansı sunar. B-Tree indekslemeye uygun olmayan her türlü düzensiz veri yapısında sorgu performansını artırmak için kullanılabilir. Bir tablo üzerinde GiST indeks oluşturmak için aşağıdaki söz dizimi kullanılabilir.
 
 ```sql
 -- GiST İndeks:
@@ -390,6 +390,19 @@ FROM public.nyc_homicides, public.nyc_neighborhoods
 WHERE st_within(nyc_homicides.geom, nyc_neighborhoods.geom)
 GROUP BY nyc_neighborhoods.name
 ORDER BY number_of_homicides DESC
+```
+
+### 7.9. ST_DWithin(A, B, int)
+
+Parametre olarak iki adet geometri ve bir tam sayı değeri alan fonksiyon geometrilerin verilen mesafe içerisinde olup olmamasına göre boolean değer döndürür. Burada önemli noktalardan biri verilen mesafenin koordinat sistemi biriminde olması gerektiğidir. ST_DWithin fonksiyonu da indeks kullanan fonksiyonlardan biridir.
+
+````sql
+-- Örnek Kullanım: Metro istasyonlarına 50m mesafede işlenen cinayet sayısı
+
+SELECT COUNT(*) as metroya_yakin_cinayet_sayisi
+FROM nyc_subway_stations, nyc_homicides
+WHERE ST_DWithin(nyc_subway_stations.geom, nyc_homicides.geom, 50)
+
 ```
 
 ## 8. ÖLÇÜM FONKSİYONLARI
