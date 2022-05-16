@@ -329,7 +329,15 @@ SELECT ST_Equals(ST_GeomFromText('LINESTRING(0 0, 10 10)'),
 
 ### 7.5. ST_Intersects(A, B)
 
-Girdi olarak alınan iki postgis geometri verisi kesişiyorsa true değer döndürür. ST_Overlaps, ST_Touches, ST_Within fonksiyonları ile de kesişim kontrol edilebilir. Bu fonksiyonlardan herhangi biri true değer döndürüyor ise kesişim vardır denebilir. ST_Disjoint fonksiyonu ayrıklığı temsil ettiği için true değer döndürmesi durumunda kesişim yoktur [9].
+Konum bazlı uygulamalarda sağladığı yüksek performanstan ötürü sıklıkla kullanılan bir fonksiyondur. GiST Index kullanan fonksiyonlardan biridir. GiST Index, genelleştirilmiş arama ağacı anlamında gelir ve çok boyutlu veriler için genel bir indeks oluşturma biçimidir. Yaygın olarak kullanılan mekansal indeksleme yöntemidir ve çok iyi sorgu performansı sunar. B-Tree indekslemeye uygun olmayan her türlü düzensiz veri yapısında sorgu performansını artırmak için kullanılabilir. Bir tablo üzerinde GiST indeks oluşturmak için aşağıdaki söz dizimi kullanılabilir.
+
+```sql
+-- GiST İndeks:
+
+CREATE INDEX index_nyc_homicides ON nyc_homicides USING GIST (geom); 
+```
+
+ST_Intersects fonksiyonu girdi olarak alınan iki postgis geometri verisi kesişiyorsa true değer döndürür. ST_Overlaps, ST_Touches, ST_Within fonksiyonları ile de kesişim kontrol edilebilir. Bu fonksiyonlardan herhangi biri true değer döndürüyor ise kesişim vardır denebilir. ST_Disjoint fonksiyonu ayrıklığı temsil ettiği için true değer döndürmesi durumunda kesişim yoktur [9].
 
 ```sql
 -- Örnek Kullanım: Mahalle sınırlarını kesen en uzun yol
