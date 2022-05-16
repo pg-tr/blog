@@ -20,7 +20,7 @@ Bu yazıda PostGIS kurulumundan başlanarak örnek bir vektör veri seti üzerin
 
 PostGIS kurulumundan önce bilgisayarda PostgreSQL kurulu olmalıdır. Eğer kurulu değilse [bu adresten](https://www.postgresql.org/download/)  kullanılacak bilgisayarın işletim sistemine uygun sürüm indirilerek temel kurulum adımları izlenerek kurulum yapılabilir. Daha sonra lokal sunucuya erişmek için kullanılacak olan master kullanıcı parolası kurulum adımında belirlenir ve unutulmamalıdır. 
 
-PostgreSQL kurulumu tamamlandıktan sonra PostGIS eklentisini sunucuya dahil etmek için farklı bir prosedür izlenmektedir. PostgreSQL sunucusuna ek seçenek ve eklenti kurulmasına olanak tanıyan ve PostgreSQL kurulumu ile birlikte gelen Stack Builder uygulaması ile PostGIS eklentisi sunucuya kurulabilir. Aşağıdaki kurulum adımları izlenerek PostGIS eklentisi sunucuya dahil edilebilir [6].
+Windows işletim sistemine sahip bilgisayarlar için PostGIS eklentisini sunucuya dahil etmek için farklı bir prosedür izlenmektedir. PostgreSQL sunucusuna ek seçenek ve eklenti kurulmasına olanak tanıyan ve PostgreSQL kurulumu ile birlikte gelen Stack Builder uygulaması ile PostGIS eklentisi aşağıdaki işlem adımları takip edilerek sunucuya kurulabilir [6]. Mac işletim sistemine sahip cihazlar için [bu adresten](https://postgresapp.com/) PostGIS'i de içeren PostgreSQL sürümü indirilip yönergeler takip edilerek kurulum yapılabilir. 
 
 1. PostgreSQL kurulumu ile birlikte gelen Stack Builder uygulaması çalıştırılır ve yapılandırmak istenilen sunucu seçilerek "Sonraki" butonu ile bir sonraki adıma geçilir.
 
