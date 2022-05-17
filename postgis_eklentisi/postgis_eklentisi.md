@@ -231,8 +231,7 @@ OGC WKT temsili olan metinsel bir ifadeden geometri oluşturan fonksiyondur. Eğ
 ```sql 
 -- Örnek Kullanım:
 
-SELECT 
-ST_GeomFromText('LINESTRING(-71.160281 42.258729,-71.160837 42.259113,-71.161144 42.25932)',4269); 
+SELECT ST_GeomFromText('LINESTRING(-71.160281 42.258729,-71.160837 42.259113,-71.161144 42.25932)',4269); 
 ```
 
 Metin verisinden geometri oluşturan fonksiyon olduğu gibi geometri verisini metinsel olarak export eden fonksiyon da vardır. ST_AsText fonksiyonu ile geometri verisini geometri türü (nokta, çizgi, poligon) ve koordinatlar olacak şekilde metinsel olarak çıktı alabiliriz. 
