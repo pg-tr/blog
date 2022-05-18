@@ -1,7 +1,6 @@
 # ETKİN MEKANSAL VERİ YÖNETİM ARACI: POSTGIS
 
 ## 1. GİRİŞ
----
 
 Bilgi ve iletişim teknolojilerinde yaşanmakta olan değişim ve dönüşüm her geçen gün hızını artırmakta ve insan hayatının neredeyse her alanına etki etmektedir. Yaşanan teknolojik gelişmeler sonucunda meydana gelen yeni ürün ve yöntemler ile insanlar yeni tecrübeler edinmekte ya da var olan deneyimlerini iyileştirmektedir. Teknolojinin getirdiği bu yenilikler sonucunda veri kaynakları artmış, yeni depolama yöntemleri ve analiz araçları geliştirilmiştir.
 
@@ -16,7 +15,6 @@ PostGIS, binden fazla mekansal fonksiyonu bulunan en verimli açık kaynak kodlu
 Bu yazıda PostGIS kurulumundan başlanarak örnek bir vektör veri seti üzerinde kullanışlı PostGIS fonksiyonları aktarılarak kullanım örneklerine yer verilecektir.
 
 ## 2. POSTGIS KURULUMU
----
 
 PostGIS kurulumundan önce bilgisayarda PostgreSQL kurulu olmalıdır. Eğer kurulu değilse [bu adresten](https://www.postgresql.org/download/)  kullanılacak bilgisayarın işletim sistemine uygun sürüm indirilerek temel kurulum adımları izlenerek kurulum yapılabilir. Daha sonra lokal sunucuya erişmek için kullanılacak olan master kullanıcı parolası kurulum adımında belirlenir ve unutulmamalıdır. 
 
@@ -48,6 +46,7 @@ CREATE EXTENSION postgis;
 
 ```sql
 SELECT postgis_verison();
+
 -- Çıktı: "3.0 USE_GEOS=1 USE_PROJ=1 USE_STATS=1"
 -- postgis_full_version() fonksiyonu ile daha detaylı bilgi alınabilir.
 ```
@@ -55,7 +54,6 @@ SELECT postgis_verison();
 Kullanılan PostGIS sürümüne ait bilgiler sorunsuz şekilde ekrana yazıldığı takdirde kurulum tamamlanmış, kullanıma hazırdır.
 
 ## 3. MEKANSAL VERİ EKLEME
----
 
 PostGIS kurulumu sorunsuz bir şekilde tamamlandıktan sonra yeni bir veri tabanı oluşturarak örnek mekansal veri setini yükleyebiliriz. Bu yazıda [bu adresteki](https://postgis.net/workshops/postgis-intro/) New York şehrine ait örnek veri seti kullanılarak uygulamalar gerçekleştirilecektir. Aynı zamanda kurulum ve veri seti hakkında daha detaylı bilgiye bu sayfadan erişilebilir. 
 
@@ -83,7 +81,6 @@ Daha sonra “Add File” butonu ile veri tabanına eklenecek olan *.shp uzantı
 </figure>
 
 ## 4. KOORDİNAT SİSTEMLERİ VE SRID KAVRAMI
----
 
 Koordinat referans sistemleri, konumsal bilgilerin uzayda tek anlamlı bir şekilde ifade edilebilmesi için gerekli olan sabit katsayılar ve parametreleri tanımlar. Konumsal verinin anlam ifade edebilmesi ve analizlerde kullanılabilmesi için oldukça önemli bir kavramdır. Koordinat referans sistemlerinin tanımlanması için farklı sabitler ve parametreler kullanıldığndan standart bir koordinat tanımlama dili oluşturmak adına EPSG (European Petroleum Survey Group) kodları kullanılmaktadır. Bu şekilde hem ifade kolaylığı sağlanmış hem de ortak bir dil oluşturulmuştur. EPSG kodu PostGIS eklentisinde SRID olarak düşünülebilir.
 
@@ -97,7 +94,9 @@ Mekansal veri tabanındaki geometri sütununu girdi olarak alan bu fonksiyon tab
 
 ```sql
 -- Örnek Kullanım:
+
 SELECT ST_SRID(geom) FROM nyc_homicides; 
+
 -- Çıktı: 26918 (Her kayıt için)
 ```
 
@@ -105,7 +104,9 @@ Bir tablodaki bütün kayıtların aynı SRID değerine sahip olması beklenir. 
 
 ```sql
 -- Örnek Kullanım: 
+
 SELECT DISTINCT(ST_SRID(geom)) FROM nyc_homicides;
+
 -- Çıktı: 26918
 ```
 
@@ -113,7 +114,9 @@ Benzer şekilde Find_SRID fonksiyonu kullanılarak bu sonuca ulaşılabilir. Tab
 
 ```sql 
 -- Örnek Kullanım:
+
 SELECT Find_SRID(‘public’,’nyc_homicides’,’geom’);
+
 -- Çıktı: 26918 
 ```
 
@@ -125,8 +128,10 @@ Paramatre olarak bir geometri sütunu ve koordinat sistemini ifade eden bir SRID
 
 ```sql 
 -- Örnek Kullanım: 
+
 SELECT ST_SRID(ST_SETSRID(geom, 4326)) 
 FROM nyc_homicides;
+
 -- Çıktı: 4326
 ```
 
@@ -138,6 +143,7 @@ Tablo adı, geometri kolonu ismi ve hedef SRID değerini girdi olarak alan bu fo
 -- Örnek Kullanım:
 
 SELECT UpdateGeometrySRID('nyc_homicides', 'geom', 4326);
+
 --Çıktı: public.nyc_homicides.geom SRID changed to 4326
 ```
 
@@ -150,11 +156,11 @@ Bir geometrinin koordinatlarını bir koordinat sisteminden başka bir koordinat
 
 SELECT ST_SRID(ST_Transform(geom, 4326)) 
 FROM nyc_homicides;
+
 -- Çıktı: 4326
 ```
 
 ## 5. GEOMETRİ DOĞRULAMA
----
 
 Veri tabanına eklenen ya da çeşitli fonksiyonlarla veri tabanında oluşturulan geometri verilerinde topolojik hatalar olabilir. Geometri verilerinde meydana gelen bu hatalar kullanılacak diğer fonksiyonların çalışmasını engelleyebilir ya da yanlış çalışmasına sebep olabilir. Geometri doğrulama fonksiyonları ile ilgili geometri verilerinin OGC SFS standartlarına göre geçerli olup olmadığı test edilebilir ve hatalar giderilebilir. Eğer varsa hatalar hakkında detaylı bilgi alınabilir.
 
@@ -166,6 +172,7 @@ Parametre olarak verilen geometri verisinin geçerliliğini test eder ve geriye 
 -- Örnek Kullanım: 
 
 SELECT ST_Isvalid(geom) FROM nyc_homicides;
+
 /*
 Çıktı:
 True
@@ -179,6 +186,7 @@ ST_Isvalid fonksiyonu ile geçersiz olan geometri verileri için false değer d�
 -- Örnek Kullanım:
 
 SELECT ST_IsvalidDetail(geom) FROM nyc_homicides;
+
 /*
 Çıktı:
 True
@@ -190,7 +198,9 @@ Benzer şekilde çalışan bir başka fonksiyon ise ST_IsvalidReason fonksiyonud
 
 ```sql
 -- Örnek Kullanım:
+
 SELECT ST_IsvalidReason(geom) FROM nyc_homicides;
+
 /*
 Çıktı:
 Valid Geometry
@@ -206,11 +216,11 @@ ST_MakeValid fonksiyonu, geçersiz bir geometri verisi için köşe noktalarınd
 -- Örnek Kullanım:
 
 SELECT ST_MakeValid (geom) FROM nyc_homicides;
+
 -- Çıktı: Düzeltilmiş PostGIS geometrisi
 ```
 
 ## 6. GEOMETRİ GİRİŞİ FONKSİYONLARI
---- 
 
 PostGIS fonksiyonları içerinde çeşitli format ya da metinsel ifadeler kullanılarak veri tabanına geometri girişini sağlayan fonksiyonlar vardır. Bunlardan başlıcaları ST_GeomFromText, ST_GeomFromGeojson, ST_GeomFromGML ve ST_GeomFromKML fonksiyonları olarak sıralanabilir. 
 
@@ -221,8 +231,7 @@ OGC WKT temsili olan metinsel bir ifadeden geometri oluşturan fonksiyondur. Eğ
 ```sql 
 -- Örnek Kullanım:
 
-SELECT 
-ST_GeomFromText('LINESTRING(-71.160281 42.258729,-71.160837 42.259113,-71.161144 42.25932)',4269); 
+SELECT ST_GeomFromText('LINESTRING(-71.160281 42.258729,-71.160837 42.259113,-71.161144 42.25932)',4269); 
 ```
 
 Metin verisinden geometri oluşturan fonksiyon olduğu gibi geometri verisini metinsel olarak export eden fonksiyon da vardır. ST_AsText fonksiyonu ile geometri verisini geometri türü (nokta, çizgi, poligon) ve koordinatlar olacak şekilde metinsel olarak çıktı alabiliriz. 
@@ -272,7 +281,7 @@ SELECT ST_GeomFromKML('
 ST_AsKML fonksiyonu ile postgis geometrisinden OGC KML verisi elde edilebilir. Yine yalnızca geometri kısmı için geçerlidir. 
 
 ## 7. TOPOLOJİK İLİŞKİLER
----
+
 
 PostGIS, geometrilerin uzayda birbirine göre durumlarını sınayan bir dizi fonksiyona sahiptir. Bu fonksiyonlar kullanılarak mekansal veriler arasındaki ilişkileri sorgulayabilir aynı zamanda çeşitli mekansal analizleri gerçekleştirebiliriz.
 
@@ -396,7 +405,7 @@ ORDER BY number_of_homicides DESC
 
 Parametre olarak iki adet geometri ve bir tam sayı değeri alan fonksiyon geometrilerin verilen mesafe içerisinde olup olmamasına göre boolean değer döndürür. Burada önemli noktalardan biri verilen mesafenin koordinat sistemi biriminde olması gerektiğidir. ST_DWithin fonksiyonu da indeks kullanan fonksiyonlardan biridir.
 
-````sql
+```sql
 -- Örnek Kullanım: Metro istasyonlarına 50m mesafede işlenen cinayet sayısı
 
 SELECT COUNT(*) as metroya_yakin_cinayet_sayisi
@@ -406,7 +415,6 @@ WHERE ST_DWithin(nyc_subway_stations.geom, nyc_homicides.geom, 50)
 ```
 
 ## 8. ÖLÇÜM FONKSİYONLARI
----
 
 PostGIS veri tabanında depolanan geometri verileri için yine PostGIS fonksiyonları kullanılarak uzunluk, alan, çevre hesabı gibi birçok hesap yapılabilir.
 
@@ -441,10 +449,11 @@ Parametre olarak aldığı iki geometri verisi arasındaki minimum 2 boyutlu mes
 
 ```sql
 -- Örnek Kullanım:
+
 SELECT ST_Distance(
 	ST_GeomFromText('POINT(26 32)', 26918), 
-	ST_GeomFromText('POINT(26 45)', 26918)
-);
+	ST_GeomFromText('POINT(26 45)', 26918));
+
 -- Çıktı: 13
 ```
 
@@ -454,6 +463,7 @@ SELECT ST_Distance(
 
 ```sql
 -- Örnek Kullanım: Sokak uzunluklarını bulurken kullanılabilir.
+
 SELECT
 	id,
 	name,
@@ -479,7 +489,6 @@ ORDER BY perimeter DESC;
 ```
 
 ## 9. BİNDİRME FONKSİYONLARI
---- 
 
 Topolojik fonksiyonlar ile mekansal ilişkilerin sınanması sonucu boolean değer döner. Bindirme fonksiyonları kullanıldığında mekansal verileri kesişim, birleşim ve fark bulma gibi fonksiyonlara tabi tutarak bu işlemler sonucunda meydana gelen yeni geometriler üretilebilir.
 
@@ -533,11 +542,9 @@ SELECT ST_SymDifference(
             ST_GeomFromText('POLYGON((1 2, 1 8, 3 8, 3 2, 1 2))', 26918),
             ST_GeomFromText('POLYGON((1 2, 1 4, 3 4, 3 2, 1 2))', 26918)
         );
-
 ```
 
 ## 10. GEOMETRİ İŞLEME FONKSİYONLARI
----
 
 Geometri işleme fonksiyonları, parametre olarak aldığı geometriler üzerinde hesaplamalar yapabilirken bu geometrilerin şeklini ve boyutunu değiştirebilir.
 
@@ -603,6 +610,7 @@ Bir referans değeri verilerek basitleştirme yapılırsa çok sayıda küçük 
 
 SELECT ST_Simplify(geom,10)
 FROM nyc_neighborhoods
+
 -- Parametre olarak aldığı tam sayı değeri artırılarak aradaki değişim gözlenebilir.
 ```
 
